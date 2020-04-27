@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 
 admin.initializeApp();
 
-exports.test = functions.auth
+exports.createUserWhen1stLogin = functions.auth
   .user().onCreate(((user, context) => {
       return admin.firestore().doc('users/' + user.uid).set({
         uid: user.uid,
