@@ -9,7 +9,8 @@ exports.createUserWhen1stLogin = functions.auth
         uid: user.uid,
         email: user.email,
         name: user.displayName,
-        picUrl: 'https://i.imgur.com/YcP0tikb.jpg'
+        picUrl: 'https://i.imgur.com/YcP0tikb.jpg',
+        isAdmin: false
       })
     }
   ));
