@@ -19,7 +19,6 @@ exports.createUserAndCartWhen1stLogin = functions.auth
         cartId: key
       })
     })
-
     }
   ));
 
