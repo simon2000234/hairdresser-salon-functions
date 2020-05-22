@@ -1,7 +1,6 @@
 import {UserRecord} from 'firebase-functions/lib/providers/auth';
 import * as admin from 'firebase-admin';
 import {UserRepository} from './user.repository';
-import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 import {User} from '../models/user';
 
 export class UserService {
@@ -9,7 +8,7 @@ export class UserService {
 
 
   createUserAndCartWhen1stLogin(user: UserRecord): Promise<void> {
-    let key = admin.database().ref().push().key
+    let key = admin.database().ref().push().key;
     if(key === null)
     {
       key = "fail"
@@ -25,12 +24,15 @@ export class UserService {
     })
   }
 
-  deleteDateConnected2UserWhenUserDelete(snapshot: DocumentSnapshot): Promise<void> {
-    const user = snapshot.data() as User
-    if (user.uid === undefined || user.cartId === undefined)
+  deleteDateConnected2UserWhenUserDelete(user: User): Promise<void> {
+    if (user.uid === undefined)
     {
-      user.uid = "fail";
-      user.cartId = "fail";
+      const error = new TypeError('User Id is undefined');
+      return Promise.reject(error);
+    }
+    if(user.cartId === undefined){
+      const error = new TypeError('Cart Id is undefined');
+      return Promise.reject(error);
     }
     return this.userRepository.deleteDateConnected2UserWhenUserDelete(user.uid, user.cartId)
   }
