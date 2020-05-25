@@ -1,4 +1,5 @@
 ## Compiled JavaScript files
+!jest.config.js
 **/*.js
 **/*.js.map
 
