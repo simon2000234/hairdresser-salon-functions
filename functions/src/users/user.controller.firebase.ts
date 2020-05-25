@@ -9,6 +9,7 @@ export class UserControllerFirebase implements UserController{
   constructor(private userService: UserService) {}
 
   createUserAndCartWhen1stLogin(user: UserRecord): Promise<void> {
+    
     return this.userService.createUserAndCartWhen1stLogin(user);
   }
 

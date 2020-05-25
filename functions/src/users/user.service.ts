@@ -2,16 +2,18 @@ import {UserRecord} from 'firebase-functions/lib/providers/auth';
 import * as admin from 'firebase-admin';
 import {UserRepository} from './user.repository';
 import {User} from '../models/user';
+import {isNullOrUndefined} from "util";
 
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
 
   createUserAndCartWhen1stLogin(user: UserRecord): Promise<void> {
-    let key = admin.database().ref().push().key;
+    const key = admin.database().ref().push().key;
     if(key === null)
     {
-      key = "fail"
+      const error = new TypeError('Key gen failed, key is null');
+      return Promise.reject(error);
     }
 
     return this.userRepository.createUserAndCartWhen1stLogin({
@@ -25,15 +27,21 @@ export class UserService {
   }
 
   deleteDateConnected2UserWhenUserDelete(user: User): Promise<void> {
-    if (user.uid === undefined)
+    if(user.uid === null){
+      const error = new TypeError('User Id is null');
+      return Promise.reject(error);
+    }
+
+    if (isNullOrUndefined(user.uid))
     {
-      const error = new TypeError('User Id is undefined');
+      const error = new TypeError('User Id is null or undefined');
       return Promise.reject(error);
     }
-    if(user.cartId === undefined){
-      const error = new TypeError('Cart Id is undefined');
+    if(isNullOrUndefined(user.cartId)){
+      const error = new TypeError('Cart Id is null or undefined');
       return Promise.reject(error);
     }
+
     return this.userRepository.deleteDateConnected2UserWhenUserDelete(user.uid, user.cartId)
   }
 }

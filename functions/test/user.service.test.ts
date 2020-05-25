@@ -14,11 +14,6 @@ describe('UserService', () => {
     userService = new UserService(userRepository.object());
   });
 
-  it('test test', () => {
-    const yes = true;
-    expect(yes).toBe(true)
-  });
-
   it('IfIdIsUndefinedWhenDeletingUserShouldThrowException', async () => {
     const user: User = {
       isAdmin: true,
@@ -29,8 +24,19 @@ describe('UserService', () => {
       uid: undefined
     };
 
-    //expect(userService.deleteDateConnected2UserWhenUserDelete(user)).rejects.toThrow(TypeError);
-    expect(userService.deleteDateConnected2UserWhenUserDelete(user)).rejects.toThrow('User Id is undefined');
+    await expect(userService.deleteDateConnected2UserWhenUserDelete(user)).rejects.toThrow('User Id is null or undefined');
+  });
+
+  it('IfIdIsNullWhenDeletingUserShouldThrowException', async () => {
+    const user: User = {
+      isAdmin: true,
+      name: 'testUser',
+      email: 'testMail',
+      cartId: 'testCart',
+      picUrl: 'testUrl',
+    };
+
+    await expect(userService.deleteDateConnected2UserWhenUserDelete(user)).rejects.toThrow('User Id is null');
   });
 
   it('IfCartIdIsUndefinedWhenDeletingUserShouldThrowException', async () => {
@@ -43,9 +49,21 @@ describe('UserService', () => {
       uid: 'testUserId'
     };
 
-    //expect(userService.deleteDateConnected2UserWhenUserDelete(user)).rejects.toThrow(TypeError);
-    expect(userService.deleteDateConnected2UserWhenUserDelete(user)).rejects.toThrow('User Id is undefined');
-  })
+    await expect(userService.deleteDateConnected2UserWhenUserDelete(user)).rejects.toThrow('Cart Id is null or undefined');
+  });
+
+  it('IfCartIdIsUndefinedWhenDeletingUserShouldThrowException', async () => {
+    const user: User = {
+      isAdmin: true,
+      name: 'testUser',
+      email: 'testMail',
+      picUrl: 'testUrl',
+      uid: 'testUserId'
+    };
+
+    await expect(userService.deleteDateConnected2UserWhenUserDelete(user)).rejects.toThrow('Cart Id is null or undefined');
+  });
+
 });
 
 
