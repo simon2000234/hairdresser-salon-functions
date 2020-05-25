@@ -1,7 +1,7 @@
 ## Compiled JavaScript files
-!jest.config.js
 **/*.js
 **/*.js.map
+!jest.config.js
 
 # Typescript v1 declaration files
 typings/
